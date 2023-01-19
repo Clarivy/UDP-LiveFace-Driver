@@ -18,6 +18,9 @@ class Timecode():
         self.byteorder = byteorder
         self.timecode_format = ">" if self.byteorder == 'big' else "<"
         self.timecode_format = self.timecode_format + "ifii"
+    
+    def get_frame_interval(self) -> float:
+        return self.FRAME_RATE_DEN / self.FRAME_RATE_NUM
 
     def get_timecode_bytes(self) -> bytes:
         """
@@ -39,7 +42,7 @@ class Timecode():
             self.FRAME_RATE_NUM,
         )
     
-    def __next__(self):
+    def __next__(self) -> bytes:
         self.current_frame_num += 1
 
         return self.get_timecode_bytes()
