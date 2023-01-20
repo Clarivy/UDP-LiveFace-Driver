@@ -80,12 +80,12 @@ class USC55_to_ARKIT_Wrapper(DataFrameWrapper):
 class BS_Parser():
     
     def __init__(self,
-        timecode: Timecode,
         BS_PACKAGE_VER = 6,
         BS_ID = '2BF95C38-D766-4400-8C28-47B55742AE6D',
         DV_NAME = 'iPad',
         byteorder = 'big',
         encoding = 'utf-8',
+        timecode: Timecode = None,
         dataframe_wrapper: DataFrameWrapper = None
     ) -> None:
 
@@ -103,6 +103,10 @@ class BS_Parser():
         else:
             self.dataframe_wrapper = dataframe_wrapper
             self.dataframe_wrapper.set_byteorder(byteorder=self.byteorder)
+        if self.timecode is None:
+            self.timecode = Timecode(byteorder=self.byteorder)
+        else:
+            self.timecode.set_byteorder(byteorder=self.byteorder)
 
         # Package info
         self.BS_PACKAGE_VER = BS_PACKAGE_VER

@@ -6,14 +6,11 @@ import threading
 
 class FaceDriver():
 
-    def __init__(self, timecode: Timecode = None, bs_parser: BS_Parser = None, udp_sender: UDP_Sender = None):
-        self._timecode = timecode
+    def __init__(self, bs_parser: BS_Parser = None, udp_sender: UDP_Sender = None):
         self._bs_parser = bs_parser
         self._udp_sender = udp_sender
-        if self._timecode is None:
-            self._timecode = Timecode(start_frame_num=0, start_subframe=0.1, FRAME_RATE_DEN=30)
         if self._bs_parser is None:
-            self._bs_parser = BS_Parser(timecode=self._timecode)
+            self._bs_parser = BS_Parser()
         if self._udp_sender is None:
             self._udp_sender = UDP_Sender(IP="localhost", port=11111)
         

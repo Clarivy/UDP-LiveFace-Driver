@@ -15,6 +15,9 @@ class Timecode():
         self.current_subframe = start_subframe
         self.FRAME_RATE_NUM = FRAME_RATE_NUM
         self.FRAME_RATE_DEN = FRAME_RATE_DEN
+        self.set_byteorder(byteorder=byteorder)
+    
+    def set_byteorder(self, byteorder: typing.Literal['big', 'little']) -> None:
         self.byteorder = byteorder
         self.timecode_format = ">" if self.byteorder == 'big' else "<"
         self.timecode_format = self.timecode_format + "ifii"
