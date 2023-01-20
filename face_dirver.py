@@ -1,6 +1,6 @@
-from BS_parser import BS_Parser
-from timecode import Timecode
-from UDP_utils import UDP_Sender
+from facedriver.BS_parser import BS_Parser
+from facedriver.timecode import Timecode
+from facedriver.UDP_utils import UDP_Sender
 import time
 import threading
 
