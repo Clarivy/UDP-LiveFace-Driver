@@ -16,7 +16,6 @@ class DataFrameWrapper():
     def parse(self, data: np.ndarray) -> None:
         package = bytearray()
         BS_NUM = len(data)
-        print("Send data", data[-5:])
         # data[-9:] *= 0
         BS_NUM_BYTES = BS_NUM.to_bytes(1, byteorder=self._byteorder)
         package.extend(BS_NUM_BYTES)
@@ -183,7 +182,6 @@ class BS_Parser():
         # Update time
         self.current_index += 1
         # self.timecode.__next__()
-        print(f"Render id{self.current_index}")
 
         return package
     
@@ -193,7 +191,7 @@ class BS_Parser():
         """
 
         if self.current_index >= len(self.data_buffer):
-            self.data_buffer = None
+            self.data_buffer = np.array([])
             self.current_index = 0
         else:
             self.data_buffer = self.data_buffer[self.current_index:]
