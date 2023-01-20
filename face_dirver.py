@@ -19,7 +19,9 @@ class FaceDriver():
         
     def send(self, bs_path: str):
         self._bs_parser.parse_npy(bs_path)
-        for frame in self._bs_parser.frames:
+        print("Sending...")
+        for frame in self._bs_parser:
             self._udp_sender.send(frame)
-            time.sleep(self._timecode.get_frame_interval())
+            time.sleep(0.01)
+        print("sent.")
         self._bs_parser.clear_buffer()
