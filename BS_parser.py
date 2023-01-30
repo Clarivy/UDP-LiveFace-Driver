@@ -49,15 +49,19 @@ class ExtendDataFrameWrapper(DataFrameWrapper):
 
 class USC55_to_ARKIT_Wrapper(DataFrameWrapper):
 
-    def __init__(self, byteorder: str = 'big') -> None:
+    def __init__(self, fix_eyeball=True, override_jawopen=True, byteorder: str = 'big') -> None:
         super().__init__(byteorder)
+
+        self._fix_eyeball = fix_eyeball
+        self._override_jawopen = override_jawopen
+        self._EYEBALL_BS_INDEX = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 
         ARKIT_TO_INDEX = {}
         for index, name in enumerate(NAMES_ARKIT):
             ARKIT_TO_INDEX[name] = index
         
         self._remap_list = [60] * 61
-        
+
         for index, USC55_name in enumerate(sorted(NAMES_USC55)):
             ARKIT_name = NAMES_USC55_from_ARKIT[USC55_name]
             if ARKIT_name != "":
@@ -73,8 +77,17 @@ class USC55_to_ARKIT_Wrapper(DataFrameWrapper):
         # print("Origin", data[:5])
 
         extended_data = np.pad(data, (0, 6), 'constant', constant_values=(0., 0.5))
+        if self._fix_eyeball:
+            data[self._EYEBALL_BS_INDEX] = 0
         ARKIT_data = extended_data[self._remap_list]
         ARKIT_data[-9:] = np.random.randn(9) / 100000
+
+        # For test
+        if self._override_jawopen:
+            ARKIT_data[37] *= 0.2
+            ARKIT_data[38] *= 0.2
+            ARKIT_data[17] = ARKIT_data[37]
+
         return ARKIT_data
 
         # extended_data = np.pad(np.ones(55) / 10, (0, 6), 'constant', constant_values=(0., 0.5))
