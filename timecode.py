@@ -7,8 +7,8 @@ class Timecode():
     def __init__(self,
         start_frame_num: int = 0,
         start_subframe: float = 0.,
-        FRAME_RATE_NUM: int = 1,
-        FRAME_RATE_DEN: int = 30,
+        FRAME_RATE_NUM: int = 2,
+        FRAME_RATE_DEN: int = 60,
         byteorder: typing.Literal['big', 'little'] = 'big'
     ) -> None:
 
@@ -55,15 +55,14 @@ class Timecode():
         Returns the current timecode as a string in the format of hh:mm:ss:ff.f
         """
 
-        frame_interval = self.get_frame_interval()
-        total_seconds = self.current_frame_num * frame_interval + self.current_subframe
-        return datetime.utcfromtimestamp(total_seconds).strftime('%H:%M:%S') + f':{self.current_frame_num % self.FRAME_RATE_DEN:02d}.{self.current_frame_num%1000:03d}'
+        total_seconds = self.current_frame_num / self.FRAME_RATE_DEN
+        return datetime.utcfromtimestamp(total_seconds).strftime('%H:%M:%S') + f':{(self.current_frame_num) % self.FRAME_RATE_DEN :02d}.{0:03d}'
     
     def __str__(self) -> str:
         return self.get_timecode_str()
     
     def __next__(self) -> bytes:
-        self.current_frame_num += 1
+        self.current_frame_num += self.FRAME_RATE_NUM
 
         return self.get_timecode_bytes()
 
