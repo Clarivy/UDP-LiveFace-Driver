@@ -1,5 +1,8 @@
 import struct
-import typing
+try:
+    from typing_extensions import Literal
+except ImportError:
+    from typing import Literal
 from datetime import datetime
 
 class Timecode():
@@ -9,7 +12,7 @@ class Timecode():
         start_subframe: float = 0.,
         FRAME_RATE_NUM: int = 2,
         FRAME_RATE_DEN: int = 60,
-        byteorder: typing.Literal['big', 'little'] = 'big'
+        byteorder: Literal['big', 'little'] = 'big'
     ) -> None:
 
         self.current_frame_num = start_frame_num
@@ -18,7 +21,7 @@ class Timecode():
         self.FRAME_RATE_DEN = FRAME_RATE_DEN
         self.set_byteorder(byteorder=byteorder)
     
-    def set_byteorder(self, byteorder: typing.Literal['big', 'little']) -> None:
+    def set_byteorder(self, byteorder: Literal['big', 'little']) -> None:
         self.byteorder = byteorder
         self.timecode_format = ">" if self.byteorder == 'big' else "<"
         self.timecode_format = self.timecode_format + "ifii"
